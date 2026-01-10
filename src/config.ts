@@ -1,6 +1,6 @@
 export const SITE = {
   // 你的网站地址（一定要改）
-  website: "https://2936170194.github.io",
+  website: "https://2936170194.github.io/MyBlog",
 
   // 作者显示名（中文 / 网名 / 都可以）
   author: "李杰",
