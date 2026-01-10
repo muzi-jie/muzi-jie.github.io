@@ -3,6 +3,7 @@ title: 为什么我要写这个博客
 pubDatetime: 2026-01-11T00:00:00Z
 description: 给自己的一个开始
 tags: [随笔]
+draft: false
 ---
 
 这是我博客的第一篇文章。
