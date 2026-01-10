@@ -5,7 +5,8 @@ pubDatetime: 2026-01-01T00:00:00Z
 featured: false
 draft: false
 description: 给自己的一个开始
-tags: [随笔]
+tags: 
+ - suibi
 ---
 这是我博客的第一篇文章。
 我不想再把时间浪费在折腾工具上，
