@@ -51,6 +51,6 @@ export const SITE = {
   // 🌏 语言：中文博客一定要改
   lang: "zh-CN",
 
-  // ⏰ 时区：改成中国
-  timezone: "Asia/Shanghai",
+  // ⏰ 时区：改成UTC
+  timezone: "UTC",
 } as const;
