@@ -6,7 +6,7 @@ slug: example-draft-post
 featured: false
 draft: false
 description: 给自己的一个开始
-tags: - 随笔
+tags: [随笔]
 ---
 这是我博客的第一篇文章。
 我不想再把时间浪费在折腾工具上，
