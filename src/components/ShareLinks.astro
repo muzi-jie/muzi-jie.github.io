@@ -3,10 +3,6 @@ import { SHARE_LINKS } from "@/constants";
 import LinkButton from "./LinkButton.astro";
 
 const URL = Astro.url;
-
-function prevent(e: MouseEvent) {
-  e.preventDefault();
-}
 ---
 
 {
@@ -16,12 +12,11 @@ function prevent(e: MouseEvent) {
       <div class="text-center">
         {SHARE_LINKS.map(social => (
           <LinkButton
-            href={`${social.href + URL}`}
+            href=""
             class="scale-90 p-2 hover:rotate-6 sm:p-1"
             title={social.linkTitle}
-            on:click={prevent}
           >
-            <social.icon class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 sm:scale-110" />
+            <social.icon class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" />
             <span class="sr-only">{social.linkTitle}</span>
           </LinkButton>
         ))}
