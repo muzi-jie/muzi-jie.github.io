@@ -52,5 +52,5 @@ export const SITE = {
   lang: "zh-CN",
 
   // ⏰ 时区：改成UTC
-  timezone: "Asia/Shanghai",
+  timezone: "UTC",
 } as const;
