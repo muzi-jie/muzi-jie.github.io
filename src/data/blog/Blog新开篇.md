@@ -1,6 +1,6 @@
 ---
 title: 为什么我要写这个博客
-date: 2026-01-11
+pubDatetime: 2026-01-11T00:00:00Z
 description: 给自己的一个开始
 tags: [随笔]
 ---
