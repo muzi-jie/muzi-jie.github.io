@@ -3,7 +3,7 @@ title: 为什么我要写这个博客
 author: 李杰
 pubDatetime: 2026-01-11T04:18:00Z
 featured: false
-draft: true
+draft: false
 description: 给自己的一个开始
 tags: 
  - 随笔
