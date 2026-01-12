@@ -12,7 +12,7 @@ tags:
 我不想再把时间浪费在折腾工具上，
 只想把它当成一个可以慢慢写下去的地方。
 <img
-  src="/blog/为什么我要写这个博客/01.png"
+  src="../../../public/blog/为什么我要写这个博客/01.png"
   alt="清晨湖畔的雪山和野花"
   style="max-width: 700px; margin: 2rem auto;"
 />
