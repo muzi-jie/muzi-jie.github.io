@@ -137,10 +137,10 @@ incr key #整形 value++，返回值是增加后的value
 incrby key increment #整形 自增increment（可为负）
 incrbyfloat key increment #浮点数 自增increment浮点数
 ```
-## Key的层级格式
+## 2.4 Key的层级格式
 使用 `项目名:业务名:类型:id` 作为key，也可以使用自己的规则。所有的value类型都可以适用
 
-## Hash
+## 2.5 Hash
 Hash类型，也叫散列，其中value是一个无序字典，类似于Java中的HashMap结构
 ![Hash结构](../../../public/blog/redis基础/02.jpg)
 ```bash
@@ -154,3 +154,76 @@ hkeys key #获取所有的field 返回数组
 hvals key #获取所有的value 返回数组
 hincrby key field increment #自增increment（可为负）返回自增后的值
 ```
+
+## 2.6 List
+List类型可以看作一个双向链表
+![List的结构](../../../public/blog/redis基础/03.jpg)
+```bash
+lpush key value1 value2 value3 #从左边添加元素，返回添加后元素的数量
+rpush key value1 value2 value3 #从右边添加元素，返回添加后元素的数量
+lpop key #从左边弹出一个元素,返回弹出的元素
+rpop key #从右边弹出一个元素,返回弹出的元素
+lrange key start end #获取范围的元素，start=0 end=-1表示获取所有元素
+blpop key timeout #从左边弹出一个元素，timeout是超时时间，单位是秒，返回一个数组，第一个元素是key，第二个元素是value
+brpop key timeout #从右边弹出一个元素，timeout是超时时间，单位是秒，返回一个数组，第一个元素是key，第二个元素是value
+```
+
+## 2.7 Set
+Set类型可以看作是一个hash表，但是value是null
+(无序、元素不重复、查找快、支持交集、并集、差集等功能)
+```bash
+sadd key value1 value2 value3 #添加元素，返回添加元素的数量
+srem key value1 value2 #删除元素，返回删除元素的数量
+scard key #获取集合的元素数量
+sismember key value #判断是否是集合的成员，返回1是，返回0不是
+smembers key #获取所有元素
+sinter key1 key2 key3 #获取交集,可以多个key,返回一个数组
+sdiff key1 key2 key3 #获取差集,key1-key2-key3-...,可以多个key,返回一个数组
+sunion key1 key2 key3 #获取并集,可以多个key,返回一个数组
+```
+
+## 2.8 SortedSet
+SortedSet类型可以看作是可排序的set集合，每个元素都有一个score值通过分数可以对元素进行排序，默认是按照分数升序排序(可排序，元素不重复，查询速度快)，因可排序特性，经常用来实现排行榜这样的功能
+
+```bash
+# 添加一个或多个元素到 sorted set（已存在则更新 score）返回添加元素的数量（更新的不计入其中）
+ZADD key score member
+
+# 删除 sorted set 中的指定元素
+ZREM key member
+
+# 获取 sorted set 中指定元素的 score 值
+ZSCORE key member
+
+# 获取 sorted set 中指定元素的排名（从 0 开始，默认升序）
+ZRANK key member
+
+# 获取 sorted set 中的元素个数
+ZCARD key
+
+# 统计 score 在指定范围内的元素个数[包含min和max]
+ZCOUNT key min max
+
+# 让指定元素的 score 自增 increment
+ZINCRBY key increment member
+
+# 按 score 排序后，获取指定排名范围内的元素[包含min和max]
+ZRANGE key min max
+
+# 按 score 排序后，获取指定 score 范围内的元素[包含min和max]
+ZRANGEBYSCORE key min max
+
+# 求差集 / 交集 / 并集
+ZDIFF    numkeys key [key ...]
+ZINTER   numkeys key [key ...]
+ZUNION   numkeys key [key ...]
+
+######################################################################################
+##  所有排名（默认升序），如果要降序，则在命令的Z后面添加REV如 ZREVRANGE key start stop  ##
+######################################################################################
+```
+
+# 3.Redis的Java客户端
+在Redis的官网提供了各种语言的客户端，地址为：[https://redis.io/clients](https://redis.io/clients)
+
+![Redis的Java客户端](../../../public/blog/redis基础/04.jpg)
