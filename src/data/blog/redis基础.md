@@ -227,3 +227,59 @@ ZUNION   numkeys key [key ...]
 在Redis的官网提供了各种语言的客户端，地址为：[https://redis.io/clients](https://redis.io/clients)
 
 ![Redis的Java客户端](../../../public/blog/redis基础/04.jpg)
+
+## 3.1 Jedis快速入门
+Jedis是Redis官方推荐的Java连接开发工具，提供了比较全面的Redis命令的支持。
+
+### 3.1.1 导入Jedis的maven坐标
+```xml
+<dependency>
+    <groupId>redis.clients</groupId>
+    <artifactId>jedis</artifactId>
+    <version>3.7.0</version>
+</dependency>
+```
+
+### 3.1.2 连接Redis
+```java
+private Jedis jedis;
+
+@BeforeEach
+void setUp() {
+    //1. 建立连接
+    jedis = new Jedis("127.0.0.1", 6379);
+    //2. 设置密码
+    jedis.auth("536536");
+    //3. 选择库
+    jedis.select(0);
+}
+```
+### 3.1.3 测试连接
+```java
+@Test
+void testString(){
+    jedis.set("name","Kyle");
+    String name = jedis.get("name");
+    System.out.println("name = " + name);
+}
+
+@Test
+void testHash(){
+    jedis.hset("reggie:user:1","name","Jack");
+    jedis.hset("reggie:user:2","name","Rose");
+    jedis.hset("reggie:user:1","age","21");
+    jedis.hset("reggie:user:2","age","18");
+    Map<String, String> map = jedis.hgetAll("reggie:user:1");
+    System.out.println(map);
+}
+```
+
+### 3.1.4 关闭连接
+```java
+@AfterEach
+void tearDown() {
+    if(jedis != null){
+        jedis.close();
+    }
+}
+```
