@@ -35,7 +35,7 @@ const {
   hideEditPost,
 } = post.data;
 
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 
 let ogImageUrl: string | undefined;
 
@@ -107,6 +107,23 @@ const nextPost =
       >
       <EditPost {hideEditPost} {post} class="max-sm:hidden" />
     </div>
+    {headings.length > 0 && (
+      <aside class="my-6 rounded-lg border border-border bg-muted/40 p-4">
+        <p class="mb-2 font-semibold text-sm text-foreground/80">目录</p>
+        <ul class="space-y-1 text-sm">
+          {headings.map(h => (
+            <li class={`ms-${(h.depth - 2) * 4}`}>
+              <a
+                href={`#${h.slug}`}
+                class="text-foreground/80 hover:text-accent transition"
+              >
+                {h.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    )}
     <article
       id="article"
       class="app-prose mt-8 w-full max-w-app prose-pre:bg-(--shiki-light-bg) dark:prose-pre:bg-(--shiki-dark-bg)"
@@ -159,6 +176,40 @@ const nextPost =
         )
       }
     </div>
+
+    {headings.length > 0 && (
+      <aside
+        class="
+          hidden xl:block
+          fixed top-28 right-8
+          w-64
+          max-h-[calc(100vh-8rem)]
+          overflow-auto
+          rounded-lg
+          border border-border
+          bg-muted/60
+          backdrop-blur
+          p-4
+        "
+      >
+        <p class="mb-3 text-sm font-semibold text-foreground/80">目录</p>
+        <ul class="space-y-2 text-sm leading-relaxed">
+          {headings.map(h => (
+            <li class={h.depth === 3 ? "ms-4" : ""}>
+              <a
+                href={`#${h.slug}`}
+                data-toc-link
+                data-slug={h.slug}
+                class="toc-link block text-foreground/70 hover:text-accent transition"
+              >
+                {h.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    )}
+        
   </main>
   <Footer />
 </Layout>
@@ -282,4 +333,89 @@ const nextPost =
   document.addEventListener("astro:after-swap", () =>
     window.scrollTo({ left: 0, top: 0, behavior: "instant" })
   );
+  //下面是右侧目录高亮设计
+
+  /** Highlight TOC item based on scroll position */
+  function initTocHighlight() {
+    const headings = Array.from(
+      document.querySelectorAll("h2[id], h3[id]")
+    );
+
+    const tocLinks = Array.from(
+      document.querySelectorAll("[data-toc-link]")
+    );
+
+    if (!headings.length || !tocLinks.length) return;
+
+    const linkMap = new Map(
+      tocLinks.map(link => [link.dataset.slug, link])
+    );
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+
+          const id = entry.target.id;
+          const activeLink = linkMap.get(id);
+          if (!activeLink) return;
+
+          // 清除所有高亮
+          tocLinks.forEach(l => l.classList.remove("active"));
+
+          // 当前高亮
+          activeLink.classList.add("active");
+
+          // 自动滚动目录，使当前项居中
+          const tocContainer = activeLink.closest("aside");
+
+          if (tocContainer) {
+            const linkRect = activeLink.getBoundingClientRect();
+            const containerRect = tocContainer.getBoundingClientRect();
+
+            const isAbove = linkRect.top < containerRect.top + (linkRect.top+linkRect.bottom)/2;
+            const isBelow = linkRect.bottom > containerRect.bottom - + (linkRect.top+linkRect.bottom)/2;
+
+            if (isAbove || isBelow) {
+              activeLink.scrollIntoView({
+                block: "center",
+                behavior: "smooth",
+              });
+            }
+          }
+        });
+      },
+      {
+        rootMargin: "-30% 0px -60% 0px",
+        threshold: 0,
+      }
+    );
+
+    headings.forEach(h => observer.observe(h));
+  }
+
+  initTocHighlight();
+  //上面是目录的滚动亮显示
 </script>
+
+
+<!--右侧目录加高亮 -->
+<style>
+  .toc-link.active {
+    color: var(--color-accent);
+    font-weight: 600;
+    position: relative;
+  }
+
+  .toc-link.active::before {
+    content: "";
+    position: absolute;
+    left: -8px;
+    top: 0.4em;
+    width: 4px;
+    height: 1em;
+    border-radius: 2px;
+    background-color: var(--color-accent);
+  }
+
+</style>
