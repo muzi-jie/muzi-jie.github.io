@@ -3,7 +3,7 @@ title: redis基础
 author: 李杰
 pubDatetime: 2026-01-12T00:00:00Z
 featured: false
-draft: true
+draft: false
 description: redis基础笔记
 tags: 
  - 后端
