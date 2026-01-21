@@ -112,7 +112,17 @@ const nextPost =
         <p class="mb-2 font-semibold text-sm text-foreground/80">目录</p>
         <ul class="space-y-1 text-sm">
           {headings.map(h => (
-            <li class={`ms-${(h.depth - 2) * 4}`}>
+            <li
+              class={
+                h.depth === 2
+                  ? "ms-0"
+                  : h.depth === 3
+                  ? "ms-4"
+                  : h.depth === 4
+                  ? "ms-8"
+                  : "ms-12"
+              }
+            >
               <a
                 href={`#${h.slug}`}
                 class="text-foreground/80 hover:text-accent transition"
@@ -195,7 +205,7 @@ const nextPost =
         <p class="mb-3 text-sm font-semibold text-foreground/80">目录</p>
         <ul class="space-y-2 text-sm leading-relaxed">
           {headings.map(h => (
-            <li class={h.depth === 3 ? "ms-4" : ""}>
+            <li class={`ms-${(h.depth - 2) * 4}`}>
               <a
                 href={`#${h.slug}`}
                 data-toc-link
@@ -338,7 +348,9 @@ const nextPost =
   /** Highlight TOC item based on scroll position */
   function initTocHighlight() {
     const headings = Array.from(
-      document.querySelectorAll("h2[id], h3[id]")
+      document.querySelectorAll(
+    "article h2[id], article h3[id], article h4[id], article h5[id], article h6[id]"
+  )
     );
 
     const tocLinks = Array.from(

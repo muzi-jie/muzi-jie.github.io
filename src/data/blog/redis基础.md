@@ -10,8 +10,8 @@ tags:
  - redis
 ---
 <!-- TOC -->
-# 1. 初识Redis
-## 1.1 认识NoSQL
+## 1. 初识Redis
+### 1.1 认识NoSQL
 
 **表 1：SQL 与 NoSQL 对比**
 | 对比项 | SQL | NoSQL |
@@ -32,7 +32,7 @@ tags:
 | 列类型 | HBase |
 | 图类型 | Neo4j |
 
-## 1.2 认识Redis
+### 1.2 认识Redis
 Redis诞生于2009年，全称是Remote Dictionary Server远程词典服务器，是一个基于内存的键值型NoSQL数据库。
 
 特征：
@@ -44,7 +44,7 @@ Redis诞生于2009年，全称是Remote Dictionary Server远程词典服务器�
 - 支持主从集群(从节点进行数据备份)、分片集群(将数据拆分，存储在不同机器上，容量和性能可扩展)
 - 支持多语言客户端（几乎所有后端语言都能用Redis）
 
-## 1.3 安装Redis
+### 1.3 安装Redis
 - Windows 版：https://github.com/microsoftarchive/redis/releases
 - Linux 版：https://download.redis.io/releases/
 注意：最好在 Linux / WSL 环境使用学习redis
@@ -67,11 +67,11 @@ systemctl stop redis #停止Redis服务
 systemctl restart redis #重启Redis服务
 systemctl status redis #查看Redis服务状态
 ```
-## 1.4 Redis桌面客户端
+### 1.4 Redis桌面客户端
 - 命令行客户端
 - 图形化桌面客户端
 - 编程客户端
-### 1.4.1 Redis命令行客户端
+#### 1.4.1 Redis命令行客户端
 Redis安装完成后就自带了命令行客户端：redis-cli，使用方式如下：
 ```bash
 redis-cli [options] [commonds]
@@ -86,16 +86,16 @@ redis-cli [options] [commonds]
 其中commonds就是Redis的命令，一般不使用这一项，先连接之后再执行命令。
 - ping：测试连接是否成功,正常会返回Pong
 
-### 1.4.2 Redis图形化桌面客户端
+#### 1.4.2 Redis图形化桌面客户端
 安装包：https://github.com/lework/RedisDesktopManager-Windows/releases
 ![下载项](../../../public/blog/redis基础/01.png)
 下载解压缩后，双击运行exe文件进行安装。
 进行redis连接即可使用。
 
-# 2. Redis命令
+## 2. Redis命令
 Redis 所有命令可在 [https://redis.io/commands](https://redis.io/commands) 中查询。
 命令行查询: help @value的类别
-## 2.1 数据结构介绍
+### 2.1 数据结构介绍
 Redis是典型的key-value数据库，key一般是字符串，而value包含很多不同的数据类型
 
 | 类型        | 名称     | 示例                          | 分类     |
@@ -109,7 +109,7 @@ Redis是典型的key-value数据库，key一般是字符串，而value包含很�
 | BitMap      | 位图     | `0110110101110101011`          | 特殊类型 |
 | HyperLogLog | 基数统计 | `0110110101110101011`          | 特殊类型 |
 
-## 2.2 通用命令
+### 2.2 通用命令
 ```bash
 help 命令 #查看用法
 keys 通配符 #查找适配的key
@@ -118,7 +118,7 @@ exists key #key是否存在，返回1存在，返回0不存在
 expire key  time #设置过期时间（s）
 ttl key #查看过期时间
 ```
-## 2.3 String类型
+### 2.3 String类型
 String类型，也就是字符串类型，是Redis中最简单的存储类型
 其value是字符串，不过根据字符串的格式不同，又可以分为3类
  - string：普通字符串
@@ -137,10 +137,10 @@ incr key #整形 value++，返回值是增加后的value
 incrby key increment #整形 自增increment（可为负）
 incrbyfloat key increment #浮点数 自增increment浮点数
 ```
-## 2.4 Key的层级格式
+### 2.4 Key的层级格式
 使用 `项目名:业务名:类型:id` 作为key，也可以使用自己的规则。所有的value类型都可以适用
 
-## 2.5 Hash
+### 2.5 Hash
 Hash类型，也叫散列，其中value是一个无序字典，类似于Java中的HashMap结构
 ![Hash结构](../../../public/blog/redis基础/02.jpg)
 ```bash
@@ -155,7 +155,7 @@ hvals key #获取所有的value 返回数组
 hincrby key field increment #自增increment（可为负）返回自增后的值
 ```
 
-## 2.6 List
+### 2.6 List
 List类型可以看作一个双向链表
 ![List的结构](../../../public/blog/redis基础/03.jpg)
 ```bash
@@ -168,7 +168,7 @@ blpop key timeout #从左边弹出一个元素，timeout是超时时间，单位
 brpop key timeout #从右边弹出一个元素，timeout是超时时间，单位是秒，返回一个数组，第一个元素是key，第二个元素是value
 ```
 
-## 2.7 Set
+### 2.7 Set
 Set类型可以看作是一个hash表，但是value是null
 (无序、元素不重复、查找快、支持交集、并集、差集等功能)
 ```bash
@@ -182,7 +182,7 @@ sdiff key1 key2 key3 #获取差集,key1-key2-key3-...,可以多个key,返回一�
 sunion key1 key2 key3 #获取并集,可以多个key,返回一个数组
 ```
 
-## 2.8 SortedSet
+### 2.8 SortedSet
 SortedSet类型可以看作是可排序的set集合，每个元素都有一个score值通过分数可以对元素进行排序，默认是按照分数升序排序(可排序，元素不重复，查询速度快)，因可排序特性，经常用来实现排行榜这样的功能
 
 ```bash
@@ -223,15 +223,15 @@ ZUNION   numkeys key [key ...]
 ######################################################################################
 ```
 
-# 3.Redis的Java客户端
+## 3.Redis的Java客户端
 在Redis的官网提供了各种语言的客户端，地址为：[https://redis.io/clients](https://redis.io/clients)
 
 ![Redis的Java客户端](../../../public/blog/redis基础/04.jpg)
 
-## 3.1 Jedis快速入门
+### 3.1 Jedis快速入门
 Jedis是Redis官方推荐的Java连接开发工具，提供了比较全面的Redis命令的支持。
 
-### 3.1.1 导入Jedis的maven坐标
+#### 3.1.1 导入Jedis的maven坐标
 ```xml
 <dependency>
     <groupId>redis.clients</groupId>
@@ -240,7 +240,7 @@ Jedis是Redis官方推荐的Java连接开发工具，提供了比较全面的Red
 </dependency>
 ```
 
-### 3.1.2 连接Redis
+#### 3.1.2 连接Redis
 ```java
 private Jedis jedis;
 
@@ -254,7 +254,7 @@ void setUp() {
     jedis.select(0);
 }
 ```
-### 3.1.3 测试连接
+#### 3.1.3 测试连接
 ```java
 @Test
 void testString(){
@@ -274,7 +274,7 @@ void testHash(){
 }
 ```
 
-### 3.1.4 关闭连接
+#### 3.1.4 关闭连接
 ```java
 @AfterEach
 void tearDown() {
@@ -284,7 +284,7 @@ void tearDown() {
 }
 ```
 
-## 3.2 Jedis连接池
+### 3.2 Jedis连接池
 - Jedis连接池是一种管理Jedis连接的机制，它可以复用已有的连接，避免每次都创建新的连接，从而提高性能。
 - 新建一个util包，用于存放我们编写的工具类JedisConnectionFactory
 - 但后面我们使用SpringDataRedis的时候，可以直接在yml配置文件里配置这些内容
@@ -343,7 +343,7 @@ class RedisTestApplicationTests {
 }
 ```
 
-## 3.3 认识SpringDataRedis
+### 3.3 认识SpringDataRedis
 - SpringData是Spring中数据操作的模块，包含对各种数据库的集成，其中对Redis的集成模块就叫做SpringDataRedis
 - 官网地址：[https://spring.io/projects/spring-data-redis](https://spring.io/projects/spring-data-redis)
   - 提供了对不同Redis客户端的整合（Lettuce和Jedis）
@@ -365,8 +365,8 @@ class RedisTestApplicationTests {
 | redisTemplate.opsForZSet()       | ZSetOperations    | 操作 SortedSet 类型数据      |
 | redisTemplate                   | ——                | 通用的 Redis 命令操作        |
 
-## 3.3 RedisTemplate快速入门
-### 3.3.1 导入依赖
+### 3.4 RedisTemplate快速入门
+#### 3.4.1 导入依赖
 ```xml
 <!--redis依赖-->
 <dependency>
@@ -379,7 +379,7 @@ class RedisTestApplicationTests {
     <artifactId>commons-pool2</artifactId>
 </dependency>
 ```
-### 3.3.2 配置Redis
+#### 3.4.2 配置Redis
 ```xml
 spring:
   data:
@@ -394,7 +394,7 @@ spring:
           min-idle: 0
           max-wait: 1000ms
 ```
-### 3.3.3 注入RedisTemplate
+#### 3.4.3 注入RedisTemplate
 ```java
 @Autowired
 	private RedisTemplate redisTemplate;
@@ -405,7 +405,7 @@ spring:
 ```
 ![RedisTemplate的序列化](../../../public/blog/redis基础/05.jpg)
 `3.4将会介绍如何解决这种问题`
-### 3.3.4 编写测试方法
+#### 3.4.4 编写测试方法
 ```java
 @Test
 void testRedisTemplate(){
@@ -415,11 +415,11 @@ void testRedisTemplate(){
 }
 ```
 
-## 3.4 RedisTemplate的RedisSerializer(第一种使用方案)
+### 3.5 RedisTemplate的RedisSerializer(第一种使用方案)
 - RedisSerializer是RedisTemplate的序列化器，用于将对象序列化为字节数组，存入redis的key或value时会使用序列化后的字节数组
 - Spring Boot 默认使用jdk序列化和反序列化，存入redis的key或value时会使用序列化后的字节数组
 - 为了解决此问题，我们需要自定义RedisTemplate<String, Object>，key会使用String序列化，value会使用json序列化
-### 3.4.1 引入依赖
+#### 3.5.1 引入依赖
 ```xml
 <!--Jackson依赖-->
 <!--json序列化反序列化使用-->
@@ -428,7 +428,7 @@ void testRedisTemplate(){
 	<artifactId>jackson-databind</artifactId>
 </dependency>
 ```
-### 3.4.2 配置RedisSerializer
+#### 3.5.2 配置RedisSerializer
 在config文件下加一个RedisConfig类
 ```java
 @Configuration
@@ -454,7 +454,7 @@ public class RedisConfig {
     }
 }
 ```
-### 3.4.3 编写User类
+#### 3.5.3 编写User类
 ```java
 package com.example.demo.people;
 
@@ -471,7 +471,7 @@ public class User {
 }
 ```
 
-### 3.4.4 编写测试方法
+#### 3.5.4 编写测试方法
 ```java
 @Autowired
 private RedisTemplate<String, Object> redisTemplate1;//使用注入的bean
@@ -485,11 +485,11 @@ void testRedisTemplateUser(){
 redis存储结果：
 ![RedisTemplate<String, Object>的json序列化](../../../public/blog/redis基础/06.jpg)
 
-## 3.5 StringRedisTemplate手动进行序列化和反序列化(第二种使用方案)
+### 3.6 StringRedisTemplate手动进行序列化和反序列化(第二种使用方案)
 
 ![StringRedisTemplate的手动序列化](../../../public/blog/redis基础/07.jpg)
 
-### 3.5.1 实现
+#### 3.6.1 实现
 ```java
 @Autowired
 private StringRedisTemplate stringRedisTemplate;
@@ -517,7 +517,7 @@ redis存储结果：
 ![StringRedisTemplate的json序列化](../../../public/blog/redis基础/08.jpg)
 `可以对比3.4的结果，大大节省了存储空间`
 
-### 3.5.3 Hash使用StringRedisTemplate
+#### 3.6.2 Hash使用StringRedisTemplate
 ```java
 @Test
 void testHash(){
